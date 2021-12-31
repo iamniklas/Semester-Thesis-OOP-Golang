@@ -2,6 +2,7 @@ package main
 
 import (
 	"Semester_Thesis_Golang/accounttypes"
+	"math"
 	"testing"
 )
 
@@ -12,13 +13,10 @@ func TestRegisterAccounts(t *testing.T) {
 	standardAccount := accounttypes.NewStandardAccount()
 	superPremiumAccount := accounttypes.NewSuperPremiumAccount()
 
-	basicAccount.PerformTransaction()
 	bank.Register(basicAccount.Account)
 
-	standardAccount.PerformTransaction()
 	bank.Register(standardAccount.Account)
 
-	superPremiumAccount.PerformTransaction()
 	bank.Register(superPremiumAccount.Account)
 
 	t.Log(basicAccount.FirstName)
@@ -34,33 +32,17 @@ func TestAccountInfo(t *testing.T) {
 	basicAccount.LastName = "Englmeier"
 	basicAccount.AccountIdentifier = "DE6971150000"
 	basicAccount.AccountBalance = 123.33
+	basicAccount.AccountBalance = math.Floor(basicAccount.AccountBalance*100) / 100
 
 	(bank.loggedInAs) = basicAccount
-
-	(bank.loggedInAs).PerformTransaction()
-	(bank.loggedInAs).PerformTransaction()
-
-	b := (bank.loggedInAs).(*accounttypes.SuperPremiumAccount).Account
-	println(b.FirstName)
 
 	bank.GetAccountInfo()
-}
 
-func TestSlice(t *testing.T) {
-	bank := NewBank()
+	expectedOutput := "Account Owner: Niklas Englmeier \nCard Identifier: DE6971150000 \nAccount Balance: 123.330000"
 
-	basicAccount := accounttypes.NewSuperPremiumAccount()
-	basicAccount.FirstName = "Niklas"
-	basicAccount.LastName = "Englmeier"
-	basicAccount.AccountIdentifier = "DE6971150000"
-	basicAccount.AccountBalance = 1.33
-
-	(bank.loggedInAs) = basicAccount
-
-	bank.registeredAccounts = append(bank.registeredAccounts, basicAccount.Account)
-
-	println(len(bank.registeredAccounts))
-	println(bank.registeredAccounts[0].FirstName)
+	if expectedOutput != bank.loggedInAs.GetAccountInfo() {
+		t.Errorf("Output invalid: Expected: %s, actual %s", expectedOutput, bank.loggedInAs.GetAccountData())
+	}
 }
 
 func TestLogin(t *testing.T) {
@@ -98,4 +80,30 @@ func TestRegister(t *testing.T) {
 	if len(bank.registeredAccounts) != 1 {
 		t.Errorf("Excepted 1, actual %d", len(bank.registeredAccounts))
 	}
+}
+
+func TestWithdrawAndDeposit(t *testing.T) {
+	bank := NewBank()
+
+	basicAccount := accounttypes.NewSuperPremiumAccount()
+	basicAccount.FirstName = "Niklas"
+	basicAccount.LastName = "Englmeier"
+	basicAccount.AccountIdentifier = "DE6971150000"
+	basicAccount.Pin = "1234"
+	basicAccount.AccountBalance = 1.33
+
+	bank.Register(basicAccount.Account)
+}
+
+func TestTransfer(t *testing.T) {
+	bank := NewBank()
+
+	basicAccount := accounttypes.NewSuperPremiumAccount()
+	basicAccount.FirstName = "Niklas"
+	basicAccount.LastName = "Englmeier"
+	basicAccount.AccountIdentifier = "DE6971150000"
+	basicAccount.Pin = "1234"
+	basicAccount.AccountBalance = 1.33
+
+	bank.Register(basicAccount.Account)
 }
