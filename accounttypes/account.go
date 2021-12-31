@@ -2,28 +2,32 @@ package accounttypes
 
 import (
 	"container/list"
+	"fmt"
 	"time"
 )
 
 type Account struct {
-	firstName             string
-	lastName              string
-	accountIdentifier     string
-	pin                   string
-	lastTimeLoggedIn      time.Time
-	accountBalance        float32
-	transactionHistory    list.List
-	transactionMultiplier float32
+	FirstName             string
+	LastName              string
+	AccountIdentifier     string
+	Pin                   string
+	LastTimeLoggedIn      time.Time
+	AccountBalance        float32
+	TransactionHistory    list.List
+	TransactionMultiplier float32
 }
 
-type BasicAccount struct {
-	Account
+type IAccount interface {
+	PerformTransaction()
+	String() string
 }
 
-type StandardAccount struct {
-	Account
+func NewAccount() *Account {
+	account := new(Account)
+	return account
 }
 
-type SuperPremiumAccount struct {
-	Account
+func (acc Account) String() string {
+	return fmt.Sprintf("Account Owner: %s %s \nCard Identifier: %s \nAccount Balance: %f",
+		acc.FirstName, acc.LastName, acc.AccountIdentifier, acc.AccountBalance)
 }

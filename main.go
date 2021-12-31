@@ -4,6 +4,25 @@ import (
 	"fmt"
 )
 
+var running = true
+
 func main() {
-	fmt.Println("Welcome to the Golang Bank")
+	bank := NewBank()
+
+	fmt.Println("CMD BANK")
+	fmt.Println("BUILT WITH GOLANG")
+	fmt.Println("Type in 'help' if you need support")
+	fmt.Println("---------------")
+
+	for {
+		input := ""
+		fmt.Scanln(&input)
+
+		runCommand(*bank, input)
+
+		if !running {
+			println("GOODBYE")
+			break
+		}
+	}
 }
