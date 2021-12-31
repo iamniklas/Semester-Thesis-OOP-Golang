@@ -9,8 +9,8 @@ func NewSuperPremiumAccount() *SuperPremiumAccount {
 	return account
 }
 
-func (account SuperPremiumAccount) GetAccountData() Account {
-	return account.Account
+func (account SuperPremiumAccount) GetAccountData() *Account {
+	return &account.Account
 }
 
 func (account SuperPremiumAccount) GetAccountInfo() string {

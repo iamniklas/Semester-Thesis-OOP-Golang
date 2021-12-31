@@ -2,25 +2,24 @@ package main
 
 import (
 	"Semester_Thesis_Golang/accounttypes"
-	"fmt"
 )
 
-func register(bank Bank) {
+func register(bank *Bank) {
 	println("Enter single account details in the following order and hit enter after each one")
 	println("First Name - Last Name - PIN")
-	firstname := ""
-	lastname := ""
-	pin := ""
-	fmt.Scanln(&firstname)
-	fmt.Scanln(&lastname)
-	fmt.Scanln(&pin)
+	firstname := "Niklas"
+	lastname := "Englmeier"
+	pin := "1234"
+	// fmt.Scanln(&firstname)
+	// fmt.Scanln(&lastname)
+	// fmt.Scanln(&pin)
 
-	newAcc := accounttypes.NewStandardAccount()
+	newAcc := accounttypes.NewAccount()
 	newAcc.FirstName = firstname
 	newAcc.LastName = lastname
 	newAcc.Pin = pin
 
-	bank.Register(newAcc.Account)
+	bank.Register(*newAcc, 0)
 }
 
 func login(bank Bank) {
@@ -43,8 +42,9 @@ func transfer(bank Bank) {
 
 }
 
-func info(bank Bank) {
-
+func info(bank *Bank) {
+	println(bank)
+	bank.GetAccountInfo()
 }
 
 func help() {

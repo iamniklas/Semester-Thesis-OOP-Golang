@@ -7,7 +7,7 @@ import (
 )
 
 type IAccount interface {
-	GetAccountData() Account
+	GetAccountData() *Account
 	GetAccountInfo() string
 	Withdraw(amount float64)
 	Deposit(amount float64)

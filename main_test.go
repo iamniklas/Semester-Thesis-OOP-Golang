@@ -13,11 +13,11 @@ func TestRegisterAccounts(t *testing.T) {
 	standardAccount := accounttypes.NewStandardAccount()
 	superPremiumAccount := accounttypes.NewSuperPremiumAccount()
 
-	bank.Register(basicAccount.Account)
+	bank.Register(basicAccount.Account, 0)
 
-	bank.Register(standardAccount.Account)
+	bank.Register(standardAccount.Account, 0)
 
-	bank.Register(superPremiumAccount.Account)
+	bank.Register(superPremiumAccount.Account, 0)
 
 	t.Log(basicAccount.FirstName)
 	t.Log(standardAccount.FirstName)
@@ -40,8 +40,8 @@ func TestAccountInfo(t *testing.T) {
 
 	expectedOutput := "Account Owner: Niklas Englmeier \nCard Identifier: DE6971150000 \nAccount Balance: 123.330000"
 
-	if expectedOutput != bank.loggedInAs.GetAccountInfo() {
-		t.Errorf("Output invalid: Expected: %s, actual %s", expectedOutput, bank.loggedInAs.GetAccountData())
+	if expectedOutput != (bank.loggedInAs).GetAccountInfo() {
+		t.Errorf("Output invalid: Expected: %s, actual %s", expectedOutput, (bank.loggedInAs).GetAccountData())
 	}
 }
 
@@ -57,7 +57,7 @@ func TestLogin(t *testing.T) {
 
 	(bank.loggedInAs) = basicAccount
 
-	bank.registeredAccounts = append(bank.registeredAccounts, basicAccount.Account)
+	bank.registeredAccounts = append(bank.registeredAccounts, basicAccount)
 
 	bank.Login("DE6971150000", "1234")
 	bank.Login("DE6971150000", "1235")
@@ -73,13 +73,13 @@ func TestRegister(t *testing.T) {
 	basicAccount.Pin = "1234"
 	basicAccount.AccountBalance = 1.33
 
-	//(bank.loggedInAs) = basicAccount
-
-	bank.Register(basicAccount.Account)
+	bank.Register(basicAccount.Account, 0)
 
 	if len(bank.registeredAccounts) != 1 {
 		t.Errorf("Excepted 1, actual %d", len(bank.registeredAccounts))
 	}
+
+	bank.GetAccountInfo()
 }
 
 func TestWithdrawAndDeposit(t *testing.T) {
@@ -92,7 +92,7 @@ func TestWithdrawAndDeposit(t *testing.T) {
 	basicAccount.Pin = "1234"
 	basicAccount.AccountBalance = 1.33
 
-	bank.Register(basicAccount.Account)
+	bank.Register(basicAccount.Account, 0)
 }
 
 func TestTransfer(t *testing.T) {
@@ -105,5 +105,5 @@ func TestTransfer(t *testing.T) {
 	basicAccount.Pin = "1234"
 	basicAccount.AccountBalance = 1.33
 
-	bank.Register(basicAccount.Account)
+	bank.Register(basicAccount.Account, 0)
 }

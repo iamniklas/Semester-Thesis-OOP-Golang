@@ -9,8 +9,8 @@ func NewStandardAccount() *StandardAccount {
 	return account
 }
 
-func (standardAccount StandardAccount) GetAccountData() Account {
-	return standardAccount.Account
+func (standardAccount StandardAccount) GetAccountData() *Account {
+	return &standardAccount.Account
 }
 
 func (standardAccount StandardAccount) GetAccountInfo() string {
