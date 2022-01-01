@@ -2,8 +2,10 @@ package main
 
 import (
 	"Semester_Thesis_Golang/accounttypes"
+	"fmt"
 	"math"
 	"testing"
+	"time"
 )
 
 func TestRegisterAccounts(t *testing.T) {
@@ -92,34 +94,81 @@ func TestWithdrawAndDeposit(t *testing.T) {
 	basicAccount.LastName = "Englmeier"
 	basicAccount.AccountIdentifier = "DE6971150000"
 	basicAccount.Pin = "1234"
-	basicAccount.AccountBalance = 20.0
 
 	bank.Register(*basicAccount, 2)
 
 	bank.Deposit(50.00)
 	println("-----")
 	println(bank.loggedInAs.GetAccountData().AccountBalance)
-	if bank.loggedInAs.GetAccountData().AccountBalance != 70.00 {
-		t.Errorf("Deposit Error! Got %f, excpected %f", bank.loggedInAs.GetAccountData().AccountBalance, 50.00)
+	if bank.loggedInAs.GetAccountData().AccountBalance != 150.00 {
+		t.Errorf("Deposit Error! Got %f, excpected %f", bank.loggedInAs.GetAccountData().AccountBalance, 150.00)
 	}
 
 	bank.Withdraw(25.00)
 	println("-----")
 	println(bank.loggedInAs.GetAccountData().AccountBalance)
-	if bank.loggedInAs.GetAccountData().AccountBalance != 45.00 {
-		t.Errorf("Deposit Error! Got %f, excpected %f", bank.loggedInAs.GetAccountData().AccountBalance, 25.00)
+	if bank.loggedInAs.GetAccountData().AccountBalance != 125.00 {
+		t.Errorf("Deposit Error! Got %f, excpected %f", bank.loggedInAs.GetAccountData().AccountBalance, 125.00)
 	}
 }
 
 func TestTransfer(t *testing.T) {
 	bank := NewBank()
 
-	basicAccount := accounttypes.NewSuperPremiumAccount()
-	basicAccount.FirstName = "Niklas"
-	basicAccount.LastName = "Englmeier"
-	basicAccount.AccountIdentifier = "DE6971150000"
-	basicAccount.Pin = "1234"
-	basicAccount.AccountBalance = 1.33
+	acc1Id := ""
+	_ = acc1Id
+	acc1Pin := "0847"
+	_ = acc1Pin
+	acc2Id := ""
+	_ = acc2Id
+	acc2Pin := "9870"
+	_ = acc2Pin
 
-	bank.Register(basicAccount.Account, 0)
+	account1 := accounttypes.NewAccount()
+	account1.FirstName = "Dominik"
+	account1.LastName = "Meister"
+	account1.Pin = "0847"
+
+	account2 := accounttypes.NewAccount()
+	account2.FirstName = "Lucas"
+	account2.LastName = "Wirth"
+	account2.Pin = "9870"
+
+	println("ACCOUNT 1 REGISTRATION")
+	bank.Register(*account1, 1)
+	acc1Id = bank.loggedInAs.GetAccountData().AccountIdentifier
+	println("---")
+	bank.GetAccountInfo()
+	bank.Logout()
+
+	time.Sleep(2 * time.Second)
+
+	println("---")
+	println("ACCOUNT 2 REGISTRATION")
+	bank.Register(*account2, 1)
+	acc2Id = bank.loggedInAs.GetAccountData().AccountIdentifier
+	println("---")
+	bank.GetAccountInfo()
+
+	println("---")
+	println("TRANSFER")
+	bank.Transfer(acc1Id, 50.0)
+
+	println("---")
+	println("Account 2 Balance")
+	//Excpected: 0.0
+	fmt.Printf("Sending account now has %f\n", bank.loggedInAs.GetAccountData().AccountBalance)
+	if bank.loggedInAs.GetAccountData().AccountBalance != 0.0 {
+		t.Errorf("Transfer Send Error: Expected %f, actual %f", 0.0, bank.loggedInAs.GetAccountData().AccountBalance)
+	}
+	println("Logout")
+	bank.Logout()
+	bank.Login(acc1Id, acc1Pin)
+	println("---")
+	println("Account 1 Balance")
+	//Excpected: 100.0
+	fmt.Printf("Sending account now has %f\n", bank.loggedInAs.GetAccountData().AccountBalance)
+	if bank.loggedInAs.GetAccountData().AccountBalance != 100.0 {
+		t.Errorf("Transfer Receive Error: Expected %f, actual %f", 100.0, bank.loggedInAs.GetAccountData().AccountBalance)
+	}
 }
