@@ -19,7 +19,7 @@ func NewBank() *Bank {
 	return bank
 }
 
-func (b *Bank) Register(newAccount accounttypes.Account, accountType int) {
+func (b *Bank) Register(newAccount accounttypes.Account, accountType int) int {
 	newAccount.AccountIdentifier = fmt.Sprintf("%s%d%d", leadingSequence, blz, time.Now().Unix())
 	newAccount.LastTimeLoggedIn = time.Now().Truncate(time.Second)
 
@@ -52,45 +52,47 @@ func (b *Bank) Register(newAccount accounttypes.Account, accountType int) {
 	fmt.Printf("Welcome %s %s\n", newAccount.FirstName, newAccount.LastName)
 	fmt.Printf("Your card identifier: %s\n", newAccount.AccountIdentifier)
 	println("You can now use our services")
+	return 0
 }
 
-func (b *Bank) Login(cardId string, pin string) {
+func (b *Bank) Login(cardId string, pin string) int {
 	for _, v := range b.registeredAccounts {
 		if v.GetAccountData().AccountIdentifier == cardId && v.GetAccountData().Pin == pin {
 			b.loggedInAs = v
 			fmt.Printf("Welcome %s %s\n", (b.loggedInAs).GetAccountData().FirstName, (b.loggedInAs).GetAccountData().LastName)
 			fmt.Printf("Last time logged in: %s\n", (b.loggedInAs).GetAccountData().LastTimeLoggedIn)
 			(b.loggedInAs).GetAccountData().LastTimeLoggedIn = time.Now().Truncate(time.Second)
-			return
+			return 0
 		}
 	}
-	println("No account with such credentials found")
+	return 1
 }
 
-func (b *Bank) Logout() {
+func (b *Bank) Logout() int {
 	if !b.requireLogin() {
-		return
+		return 1
 	}
 	b.loggedInAs = nil
+	return 0
 }
 
-func (b *Bank) Withdraw(amount float64) {
+func (b *Bank) Withdraw(amount float64) int {
 	if !b.requireLogin() {
-		return
+		return 1
 	}
-	(b.loggedInAs).Withdraw(amount, false)
+	return (b.loggedInAs).Withdraw(amount, false)
 }
 
-func (b *Bank) Deposit(amount float64) {
+func (b *Bank) Deposit(amount float64) int {
 	if !b.requireLogin() {
-		return
+		return 1
 	}
-	(b.loggedInAs).Deposit(amount, false)
+	return (b.loggedInAs).Deposit(amount, false)
 }
 
-func (b *Bank) Transfer(accId string, moneyToTransfer float32) {
+func (b *Bank) Transfer(accId string, moneyToTransfer float32) int {
 	if !b.requireLogin() {
-		return
+		return 1
 	}
 
 	//TODO: Check if account exists
@@ -98,16 +100,18 @@ func (b *Bank) Transfer(accId string, moneyToTransfer float32) {
 	for _, v := range b.registeredAccounts {
 		if v.GetAccountData().AccountIdentifier == accId {
 			v.Deposit(float64(moneyToTransfer), true)
-			return
+			return 0
 		}
 	}
+	return 2
 }
 
-func (b *Bank) GetAccountInfo() {
+func (b *Bank) GetAccountInfo() int {
 	if !b.requireLogin() {
-		return
+		return 1
 	}
 	println((b.loggedInAs).GetAccountInfo())
+	return 0
 }
 
 func (b *Bank) requireLogin() bool {

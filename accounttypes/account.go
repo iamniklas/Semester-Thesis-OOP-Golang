@@ -8,8 +8,8 @@ import (
 type IAccount interface {
 	GetAccountData() *Account
 	GetAccountInfo() string
-	Withdraw(amount float64, transferToOtherAccount bool)
-	Deposit(amount float64, transferToOtherAccount bool)
+	Withdraw(amount float64, transferToOtherAccount bool) int
+	Deposit(amount float64, transferToOtherAccount bool) int
 }
 
 type Account struct {

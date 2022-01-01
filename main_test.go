@@ -112,13 +112,11 @@ func TestWithdrawAndDeposit(t *testing.T) {
 	}
 }
 
-func TestTransfer(t *testing.T) {
+func TestTransferDepositAndWithdraw(t *testing.T) {
 	bank := NewBank()
 
 	acc1Id := ""
-	_ = acc1Id
 	acc1Pin := "0847"
-	_ = acc1Pin
 	acc2Id := ""
 	_ = acc2Id
 	acc2Pin := "9870"

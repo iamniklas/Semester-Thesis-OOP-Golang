@@ -16,12 +16,22 @@ func (standardAccount StandardAccount) GetAccountInfo() string {
 	return standardAccount.Account.String()
 }
 
-func (standardAccount *StandardAccount) Withdraw(amount float64, transferToOtherAccount bool) {
-	standardAccount.AccountBalance = standardAccount.AccountBalance - amount
-	standardAccount.Account.AddTransaction(transferToOtherAccount, -amount)
+func (standardAccount *StandardAccount) Withdraw(amount float64, transferToOtherAccount bool) int {
+	if amount >= 0.0 {
+		standardAccount.AccountBalance = standardAccount.AccountBalance - amount
+		standardAccount.Account.AddTransaction(transferToOtherAccount, -amount)
+		return 0
+	} else {
+		return 1
+	}
 }
 
-func (standardAccount *StandardAccount) Deposit(amount float64, transferToOtherAccount bool) {
-	standardAccount.AccountBalance = standardAccount.AccountBalance + amount
-	standardAccount.Account.AddTransaction(transferToOtherAccount, amount)
+func (standardAccount *StandardAccount) Deposit(amount float64, transferToOtherAccount bool) int {
+	if amount >= 0.0 {
+		standardAccount.AccountBalance = standardAccount.AccountBalance + amount
+		standardAccount.Account.AddTransaction(transferToOtherAccount, amount)
+		return 0
+	} else {
+		return 1
+	}
 }
