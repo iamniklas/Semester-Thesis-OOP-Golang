@@ -16,10 +16,12 @@ func (basicAccount BasicAccount) GetAccountInfo() string {
 	return basicAccount.Account.String()
 }
 
-func (basicAccount *BasicAccount) Withdraw(amount float64) {
+func (basicAccount *BasicAccount) Withdraw(amount float64, transferToOtherAccount bool) {
 	basicAccount.AccountBalance = basicAccount.AccountBalance - amount
+	basicAccount.Account.AddTransaction(transferToOtherAccount, -amount)
 }
 
-func (basicAccount *BasicAccount) Deposit(amount float64) {
+func (basicAccount *BasicAccount) Deposit(amount float64, transferToOtherAccount bool) {
 	basicAccount.AccountBalance = basicAccount.AccountBalance + amount
+	basicAccount.Account.AddTransaction(transferToOtherAccount, amount)
 }

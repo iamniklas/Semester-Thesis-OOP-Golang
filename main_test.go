@@ -161,8 +161,16 @@ func TestTransfer(t *testing.T) {
 	if bank.loggedInAs.GetAccountData().AccountBalance != 0.0 {
 		t.Errorf("Transfer Send Error: Expected %f, actual %f", 0.0, bank.loggedInAs.GetAccountData().AccountBalance)
 	}
+
+	bank.Deposit(1.0)
+	bank.Withdraw(2.0)
+
+	println("TRANSACTION INFO")
+	println(bank.loggedInAs.GetAccountData().GetLastFiveTransaction())
+
 	println("Logout")
 	bank.Logout()
+
 	bank.Login(acc1Id, acc1Pin)
 	println("---")
 	println("Account 1 Balance")
@@ -171,4 +179,6 @@ func TestTransfer(t *testing.T) {
 	if bank.loggedInAs.GetAccountData().AccountBalance != 100.0 {
 		t.Errorf("Transfer Receive Error: Expected %f, actual %f", 100.0, bank.loggedInAs.GetAccountData().AccountBalance)
 	}
+	println("TRANSACTION INFO")
+	println(bank.loggedInAs.GetAccountData().GetLastFiveTransaction())
 }

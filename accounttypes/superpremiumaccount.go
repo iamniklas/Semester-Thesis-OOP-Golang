@@ -5,22 +5,23 @@ type SuperPremiumAccount struct {
 }
 
 func NewSuperPremiumAccount() *SuperPremiumAccount {
-	account := new(SuperPremiumAccount)
-	return account
+	return &SuperPremiumAccount{}
 }
 
-func (account SuperPremiumAccount) GetAccountData() *Account {
-	return &account.Account
+func (superPremiumAccount SuperPremiumAccount) GetAccountData() *Account {
+	return &superPremiumAccount.Account
 }
 
-func (account SuperPremiumAccount) GetAccountInfo() string {
-	return account.String()
+func (superPremiumAccount SuperPremiumAccount) GetAccountInfo() string {
+	return superPremiumAccount.String()
 }
 
-func (account *SuperPremiumAccount) Withdraw(amount float64) {
-	account.AccountBalance = account.AccountBalance - amount
+func (superPremiumAccount *SuperPremiumAccount) Withdraw(amount float64, transferToOtherAccount bool) {
+	superPremiumAccount.AccountBalance = superPremiumAccount.AccountBalance - amount
+	superPremiumAccount.Account.AddTransaction(transferToOtherAccount, -amount)
 }
 
-func (account *SuperPremiumAccount) Deposit(amount float64) {
-	account.AccountBalance = account.AccountBalance + amount
+func (superPremiumAccount *SuperPremiumAccount) Deposit(amount float64, transferToOtherAccount bool) {
+	superPremiumAccount.AccountBalance = superPremiumAccount.AccountBalance + amount
+	superPremiumAccount.Account.AddTransaction(transferToOtherAccount, amount)
 }

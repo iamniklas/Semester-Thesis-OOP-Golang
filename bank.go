@@ -78,14 +78,14 @@ func (b *Bank) Withdraw(amount float64) {
 	if !b.requireLogin() {
 		return
 	}
-	(b.loggedInAs).Withdraw(amount)
+	(b.loggedInAs).Withdraw(amount, false)
 }
 
 func (b *Bank) Deposit(amount float64) {
 	if !b.requireLogin() {
 		return
 	}
-	(b.loggedInAs).Deposit(amount)
+	(b.loggedInAs).Deposit(amount, false)
 }
 
 func (b *Bank) Transfer(accId string, moneyToTransfer float32) {
@@ -94,10 +94,10 @@ func (b *Bank) Transfer(accId string, moneyToTransfer float32) {
 	}
 
 	//TODO: Check if account exists
-	b.loggedInAs.Withdraw(float64(moneyToTransfer))
+	b.loggedInAs.Withdraw(float64(moneyToTransfer), true)
 	for _, v := range b.registeredAccounts {
 		if v.GetAccountData().AccountIdentifier == accId {
-			v.Deposit(float64(moneyToTransfer))
+			v.Deposit(float64(moneyToTransfer), true)
 			return
 		}
 	}
