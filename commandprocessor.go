@@ -3,22 +3,22 @@ package main
 func runCommand(bank *Bank, input string) {
 	switch command := input; command {
 	case "login":
-		login(*bank)
+		login(bank)
 		break
 	case "logout":
-		logout(*bank)
+		logout(bank)
 		break
 	case "register":
 		register(bank)
 		break
 	case "withdraw":
-		withdraw(*bank)
+		withdraw(bank)
 		break
 	case "deposit":
-		deposit(*bank)
+		deposit(bank)
 		break
 	case "transfer":
-		transfer(*bank)
+		transfer(bank)
 		break
 	case "info":
 		info(bank)

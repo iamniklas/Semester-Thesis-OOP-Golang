@@ -2,17 +2,19 @@ package main
 
 import (
 	"Semester_Thesis_Golang/accounttypes"
+	"fmt"
+	"strconv"
 )
 
 func register(bank *Bank) {
 	println("Enter single account details in the following order and hit enter after each one")
 	println("First Name - Last Name - PIN")
-	firstname := "Niklas"
-	lastname := "Englmeier"
-	pin := "1234"
-	// fmt.Scanln(&firstname)
-	// fmt.Scanln(&lastname)
-	// fmt.Scanln(&pin)
+	firstname := ""
+	lastname := ""
+	pin := ""
+	fmt.Scanln(&firstname)
+	fmt.Scanln(&lastname)
+	fmt.Scanln(&pin)
 
 	newAcc := accounttypes.NewAccount()
 	newAcc.FirstName = firstname
@@ -22,23 +24,26 @@ func register(bank *Bank) {
 	bank.Register(*newAcc, 0)
 }
 
-func login(bank Bank) {
+func login(bank *Bank) {
 
 }
 
-func logout(bank Bank) {
+func logout(bank *Bank) {
 
 }
 
-func withdraw(bank Bank) {
+func withdraw(bank *Bank) {
 
 }
 
-func deposit(bank Bank) {
-
+func deposit(bank *Bank) {
+	input := ""
+	fmt.Scanln(&input)
+	floatNum, _ := strconv.ParseFloat(input, 64)
+	bank.Deposit(floatNum)
 }
 
-func transfer(bank Bank) {
+func transfer(bank *Bank) {
 
 }
 

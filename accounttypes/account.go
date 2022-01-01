@@ -30,6 +30,6 @@ func NewAccount() *Account {
 }
 
 func (acc Account) String() string {
-	return fmt.Sprintf("Account Owner: %s %s \nCard Identifier: %s \nAccount Balance: %f",
-		acc.FirstName, acc.LastName, acc.AccountIdentifier, acc.AccountBalance)
+	return fmt.Sprintf("Account Owner: %s %s \nCard Identifier: %s \nAccount Balance: %f \nPIN: %s",
+		acc.FirstName, acc.LastName, acc.AccountIdentifier, acc.AccountBalance, acc.Pin)
 }
