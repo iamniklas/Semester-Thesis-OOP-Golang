@@ -20,6 +20,9 @@ func runCommand(bank *Bank, input string) {
 	case "transfer":
 		transfer(bank)
 		break
+	case "history":
+		history(bank)
+		break
 	case "info":
 		info(bank)
 		break

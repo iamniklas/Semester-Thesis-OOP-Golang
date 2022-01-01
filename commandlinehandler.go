@@ -25,7 +25,15 @@ func register(bank *Bank) {
 	newAcc.LastName = lastname
 	newAcc.Pin = pin
 
-	bank.Register(*newAcc, accountTypeInt)
+	result := bank.Register(*newAcc, accountTypeInt)
+
+	if result == 0 {
+		fmt.Printf("Welcome %s %s\n", bank.loggedInAs.GetAccountData().FirstName, bank.loggedInAs.GetAccountData().LastName)
+		fmt.Printf("Your card identifier: %s\n", bank.loggedInAs.GetAccountData().AccountIdentifier)
+		println("You can now use our services")
+	} else {
+		fmt.Printf("Registration failed, Error-Code: %d\n", result)
+	}
 }
 
 func login(bank *Bank) {
@@ -35,25 +43,51 @@ func login(bank *Bank) {
 	println("Enter your PIN")
 	pin := ""
 	fmt.Scanln(&pin)
-	bank.Login(accountId, pin)
+	result := bank.Login(accountId, pin)
+
+	if result == 0 {
+		fmt.Printf("Welcome %s %s\n", (bank.loggedInAs).GetAccountData().FirstName, (bank.loggedInAs).GetAccountData().LastName)
+		fmt.Printf("Last time logged in: %s\n", (bank.loggedInAs).GetAccountData().LastTimeLoggedIn)
+	} else {
+		fmt.Printf("Login failed, Error-Code: %d\n", result)
+	}
 }
 
 func logout(bank *Bank) {
-	bank.Logout()
+	result := bank.Logout()
+	if result == 0 {
+		println("Logout successful")
+	} else {
+		fmt.Printf("Logout failed, Error-Code: %d\n", result)
+	}
 }
 
 func withdraw(bank *Bank) {
+	println("Enter the amount to withdraw")
 	input := ""
 	fmt.Scanln(&input)
 	floatNum, _ := strconv.ParseFloat(input, 64)
-	bank.Withdraw(floatNum)
+	result := bank.Withdraw(floatNum)
+
+	if result == 0 {
+		println("Withdraw successful")
+	} else {
+		fmt.Printf("Withdraw failed, Error-Code: %d\n", result)
+	}
 }
 
 func deposit(bank *Bank) {
+	println("Enter the amount to deposit")
 	input := ""
 	fmt.Scanln(&input)
 	floatNum, _ := strconv.ParseFloat(input, 64)
-	bank.Deposit(floatNum)
+	result := bank.Deposit(floatNum)
+
+	if result == 0 {
+		println("Deposit successful")
+	} else {
+		fmt.Printf("Deposit failed, Error-Code: %d\n", result)
+	}
 }
 
 func transfer(bank *Bank) {
@@ -64,12 +98,26 @@ func transfer(bank *Bank) {
 	fmt.Scanln(&amountToTransfer)
 	floatNum, _ := strconv.ParseFloat(amountToTransfer, 64)
 
-	bank.Transfer(targetAccId, float32(floatNum))
+	result := bank.Transfer(targetAccId, float32(floatNum))
+
+	if result == 0 {
+		println("Transfer successful")
+	} else {
+		fmt.Printf("Transfer failed, Error-Code: %d\n", result)
+	}
 }
 
 func info(bank *Bank) {
 	println(bank)
-	bank.GetAccountInfo()
+	result := bank.GetAccountInfo()
+
+	if result != 0 {
+		fmt.Printf("Failed to get Account Info, Error-Code: %d\n", result)
+	}
+}
+
+func history(bank *Bank) {
+	println(bank.loggedInAs.GetAccountData().GetLastFiveTransaction())
 }
 
 func help() {

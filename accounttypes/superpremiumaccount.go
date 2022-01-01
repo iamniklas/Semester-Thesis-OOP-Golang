@@ -17,7 +17,7 @@ func (superPremiumAccount SuperPremiumAccount) GetAccountInfo() string {
 }
 
 func (superPremiumAccount *SuperPremiumAccount) Withdraw(amount float64, transferToOtherAccount bool) int {
-	if amount <= 0.0 {
+	if amount > 0.0 {
 		superPremiumAccount.AccountBalance = superPremiumAccount.AccountBalance - amount
 		superPremiumAccount.Account.AddTransaction(transferToOtherAccount, -amount)
 		return 0
@@ -27,7 +27,7 @@ func (superPremiumAccount *SuperPremiumAccount) Withdraw(amount float64, transfe
 }
 
 func (superPremiumAccount *SuperPremiumAccount) Deposit(amount float64, transferToOtherAccount bool) int {
-	if amount <= 0.0 {
+	if amount > 0.0 {
 		superPremiumAccount.AccountBalance = superPremiumAccount.AccountBalance + amount
 		superPremiumAccount.Account.AddTransaction(transferToOtherAccount, amount)
 		return 0

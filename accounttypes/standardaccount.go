@@ -17,7 +17,7 @@ func (standardAccount StandardAccount) GetAccountInfo() string {
 }
 
 func (standardAccount *StandardAccount) Withdraw(amount float64, transferToOtherAccount bool) int {
-	if amount >= 0.0 {
+	if amount > 0.0 {
 		standardAccount.AccountBalance = standardAccount.AccountBalance - amount
 		standardAccount.Account.AddTransaction(transferToOtherAccount, -amount)
 		return 0
@@ -27,7 +27,7 @@ func (standardAccount *StandardAccount) Withdraw(amount float64, transferToOther
 }
 
 func (standardAccount *StandardAccount) Deposit(amount float64, transferToOtherAccount bool) int {
-	if amount >= 0.0 {
+	if amount > 0.0 {
 		standardAccount.AccountBalance = standardAccount.AccountBalance + amount
 		standardAccount.Account.AddTransaction(transferToOtherAccount, amount)
 		return 0

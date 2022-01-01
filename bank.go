@@ -49,9 +49,6 @@ func (b *Bank) Register(newAccount accounttypes.Account, accountType int) int {
 		break
 	}
 
-	fmt.Printf("Welcome %s %s\n", newAccount.FirstName, newAccount.LastName)
-	fmt.Printf("Your card identifier: %s\n", newAccount.AccountIdentifier)
-	println("You can now use our services")
 	return 0
 }
 
@@ -59,8 +56,6 @@ func (b *Bank) Login(cardId string, pin string) int {
 	for _, v := range b.registeredAccounts {
 		if v.GetAccountData().AccountIdentifier == cardId && v.GetAccountData().Pin == pin {
 			b.loggedInAs = v
-			fmt.Printf("Welcome %s %s\n", (b.loggedInAs).GetAccountData().FirstName, (b.loggedInAs).GetAccountData().LastName)
-			fmt.Printf("Last time logged in: %s\n", (b.loggedInAs).GetAccountData().LastTimeLoggedIn)
 			(b.loggedInAs).GetAccountData().LastTimeLoggedIn = time.Now().Truncate(time.Second)
 			return 0
 		}
@@ -95,11 +90,14 @@ func (b *Bank) Transfer(accId string, moneyToTransfer float32) int {
 		return 1
 	}
 
-	//TODO: Check if account exists
-	b.loggedInAs.Withdraw(float64(moneyToTransfer), true)
 	for _, v := range b.registeredAccounts {
 		if v.GetAccountData().AccountIdentifier == accId {
-			v.Deposit(float64(moneyToTransfer), true)
+			if b.loggedInAs.Withdraw(float64(moneyToTransfer), true) != 0 {
+				return 3
+			}
+			if v.Deposit(float64(moneyToTransfer), true) != 0 {
+				return 4
+			}
 			return 0
 		}
 	}
@@ -115,10 +113,5 @@ func (b *Bank) GetAccountInfo() int {
 }
 
 func (b *Bank) requireLogin() bool {
-	if b.loggedInAs == nil {
-		println("You have to be logged in to perform this action")
-		println("Login to your account and try again")
-		return false
-	}
-	return true
+	return b.loggedInAs != nil
 }

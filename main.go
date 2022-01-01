@@ -8,7 +8,6 @@ var running = true
 
 func main() {
 	bank := NewBank()
-	println(bank)
 
 	fmt.Println("CMD BANK")
 	fmt.Println("BUILT WITH GOLANG")
