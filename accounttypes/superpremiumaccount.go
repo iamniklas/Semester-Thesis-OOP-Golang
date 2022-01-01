@@ -1,5 +1,7 @@
 package accounttypes
 
+import "math/rand"
+
 type SuperPremiumAccount struct {
 	Account
 }
@@ -27,6 +29,9 @@ func (superPremiumAccount *SuperPremiumAccount) Withdraw(amount float64, transfe
 }
 
 func (superPremiumAccount *SuperPremiumAccount) Deposit(amount float64, transferToOtherAccount bool) int {
+	if rand.Intn(10) == 1 {
+		amount = amount * 1.5
+	}
 	if amount > 0.0 {
 		superPremiumAccount.AccountBalance = superPremiumAccount.AccountBalance + amount
 		superPremiumAccount.Account.AddTransaction(transferToOtherAccount, amount)
