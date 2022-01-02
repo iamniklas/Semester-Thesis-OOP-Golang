@@ -38,6 +38,7 @@ func TestAccountInfo(t *testing.T) {
 	basicAccount.Pin = "0000"
 	basicAccount.AccountBalance = math.Floor(basicAccount.AccountBalance*100) / 100
 
+	//Don't use register, because registration does override start amount and Account Balance
 	(bank.loggedInAs) = basicAccount
 
 	bank.GetAccountInfo()
