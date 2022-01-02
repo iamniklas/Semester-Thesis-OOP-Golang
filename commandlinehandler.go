@@ -121,5 +121,5 @@ func history(bank *Bank) {
 }
 
 func help() {
-	println("Available actions: login, logout, register, withdraw, deposit, info, help, quit")
+	println("Available actions: login, logout, register, withdraw, deposit, info, history, help, quit")
 }
