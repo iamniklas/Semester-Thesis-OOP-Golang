@@ -89,19 +89,22 @@ func (b *Bank) Transfer(accId string, moneyToTransfer float32) int {
 	if !b.requireLogin() {
 		return 1
 	}
+	if moneyToTransfer <= 0.0 {
+		return 2
+	}
 
 	for _, v := range b.registeredAccounts {
 		if v.GetAccountData().AccountIdentifier == accId {
 			if b.loggedInAs.Withdraw(float64(moneyToTransfer), true) != 0 {
-				return 3
+				return 4
 			}
 			if v.Deposit(float64(moneyToTransfer), true) != 0 {
-				return 4
+				return 5
 			}
 			return 0
 		}
 	}
-	return 2
+	return 3
 }
 
 func (b *Bank) GetAccountInfo() int {
